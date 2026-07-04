@@ -60,8 +60,8 @@ def gerar_raio(i, j, C, u, v, w, largura, altura, d):
     como elipses em imagens não quadradas."""
     aspect = largura / altura
 
-    px = (2 * (i + 0.5) / largura  - 1) * aspect   # coordenada horizontal NDC
-    py =  1 - 2 * (j + 0.5) / altura               # coordenada vertical NDC (j=0 é o topo)
+    px = (2 * (i) / largura  - 1) * aspect   # coordenada horizontal NDC
+    py =  1 - 2 * (j) / altura               # coordenada vertical NDC (j=0 é o topo)
 
     # O ponto na tela é C - w*d + u*px + v*py. O vetor direção é esse ponto menos C,
     # o que cancela C e deixa só -w*d + u*px + v*py.
@@ -318,17 +318,25 @@ def renderizar(scene_path="utils/input/sampleScene.json"):
 
     print(f"Renderizando {largura}x{altura} ({len(objetos)} objetos, "
           f"{len(scene.light_list)} luzes)...", file=sys.stderr)
+    
+    AA_OFFSETS = [(0, 0), (1, 0), (0, 1), (1, 1)]
 
     for j in range(altura):
+        
         if j % 10 == 0 or j == altura - 1:
             pct = (j + 1) * 100 // altura
             print(f"  linha {j + 1}/{altura} ({pct}%)", file=sys.stderr)
         for i in range(largura):
-            raio = gerar_raio(i, j, C, u, v, w, largura, altura, d)
-            # Raio primário com profundidade 0; tracar() cuida da recursão de
-            # reflexão/refração e devolve a cor já somada (Phong + k_r·I_r + k_t·I_t).
-            r, g, b = tracar(raio, scene, objetos, 0)
-            linhas.append(f"{_to_byte(r)} {_to_byte(g)} {_to_byte(b)}")
+            r_sum = g_sum = b_sum = 0.0
+            for dx, dy in AA_OFFSETS:      
+                raio = gerar_raio(i + dx, j + dy, C, u, v, w, largura, altura, d)
+
+
+                # Raio primário com profundidade 0; tracar() cuida da recursão de
+                # reflexão/refração e devolve a cor já somada (Phong + k_r·I_r + k_t·I_t).
+                r, g, b = tracar(raio, scene, objetos, 0)
+                r_sum += r; g_sum += g; b_sum += b
+            linhas.append(f"{_to_byte(r/4)} {_to_byte(g/4)} {_to_byte(b/4)}")
 
     sys.stdout.write("\n".join(linhas) + "\n")
 
