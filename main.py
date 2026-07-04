@@ -336,7 +336,7 @@ def renderizar(scene_path="utils/input/sampleScene.json"):
                 # reflexão/refração e devolve a cor já somada (Phong + k_r·I_r + k_t·I_t).
                 r, g, b = tracar(raio, scene, objetos, 0)
                 r_sum += r; g_sum += g; b_sum += b
-            linhas.append(f"{_to_byte(r/4)} {_to_byte(g/4)} {_to_byte(b/4)}")
+            linhas.append(f"{_to_byte(r_sum/4)} {_to_byte(g_sum/4)} {_to_byte(b_sum/4)}")
 
     sys.stdout.write("\n".join(linhas) + "\n")
 
