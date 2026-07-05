@@ -320,6 +320,8 @@ def renderizar(scene_path="utils/input/sampleScene.json"):
           f"{len(scene.light_list)} luzes)...", file=sys.stderr)
     
     AA_OFFSETS = [(0, 0), (1, 0), (0, 1), (1, 1)]
+    #AA_OFFSETS = [(0, 0), (0.9, 0), (0, 0.9), (0.9, 0.9)]
+    #AA_OFFSETS = [(0, 0), (0.45,0),(0.9, 0), (0, 0.9),(0,0.45), (0.45,0.45) ,(0.9, 0.9)]
 
     for j in range(altura):
         
