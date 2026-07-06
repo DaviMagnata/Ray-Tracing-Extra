@@ -4,7 +4,7 @@ from src.Raio import Raio
 from utils.MeshReader.ObjReader import ObjReader
 from utils.MeshReader.Colormap import MaterialProperties
 from utils.Scene.sceneSchema import MaterialData, ColorData
-
+import sys
 
 class Malha:
     def __init__(self, path: str, material, transforms: list):
@@ -33,7 +33,8 @@ class Malha:
         (a partir de dados em memória): aplica transform, resolve materiais por
         face, monta os triângulos e calcula a AABB."""
         M = self._construir_matriz(transforms)
-
+        
+        print(f"[DEBUG] Matriz M:\n{M}", file=sys.stderr)
         vertices_mundo = [M.aplicar_ponto(v) for v in vertices]
 
         material_cache: dict[int, MaterialData] = {}

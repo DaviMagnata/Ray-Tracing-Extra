@@ -9,8 +9,8 @@ from src.Plano import Plano
 from src.Malha import Malha
 from utils.Scene.sceneParser import SceneJsonLoader
 from utils.Scene.sceneSchema import TransformData
-
-# Pequeno deslocamento usado para afastar raios secundários da superfície de origem
+import sys
+# Pequeno deslocamento usado para afastar raios secundários da superfície de or igem
 # e evitar auto-interseção causada por imprecisão de ponto flutuante.
 SHADOW_EPS = 1e-4
 
@@ -92,6 +92,14 @@ def criar_objetos(scene):
         elif obj.obj_type == "mesh":
             path = obj.get_property("path")
             objetos.append(Malha(path, obj.material, obj.transforms))
+
+        elif obj.obj_type == "torus":
+            R   = obj.get_num("R")
+            r   = obj.get_num("r")
+            n_u = int(obj.numeric_data.get("n_u", 30))
+            n_v = int(obj.numeric_data.get("n_v", 20))
+            
+            objetos.append(Torus(R=R, r=r, n_u=n_u, n_v=n_v, transforms=obj.transforms))
 
     return objetos
 
@@ -313,10 +321,6 @@ def renderizar(scene_path="utils/input/sampleScene.json"):
     C, u, v, w = base_camera(scene)
     objetos     = criar_objetos(scene)
 
-    toro = Torus(R=2.0, r=0.5, transforms=[
-    TransformData(t_type="translation", data=Vetor(0.0, 0.0, 0.0))
-    ])
-    objetos.append(toro)
 
     # Cabeçalho PPM: tipo P3 (texto RGB), dimensões e valor máximo por canal
     linhas = [f"P3\n{largura} {altura}\n255"]
