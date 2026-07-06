@@ -7,41 +7,37 @@ from utils.Scene.sceneSchema import MaterialData, ColorData
 
 
 class Malha:
-    """Malha de triângulos carregada de um arquivo .obj com transformações afins.
-
-    O pipeline é:
-        1. Ler vértices, faces e MATERIAIS do .obj+.mtl via ObjReader
-        2. Construir a matriz de transformação M combinando scaling, rotation e translation
-        3. Aplicar M a cada vértice (espaço do objeto → espaço do mundo)
-        4. Para cada face, criar um Triangulo com os vértices transformados e o
-           material da própria face (vindo do arquivo .mtl referenciado pelo .obj)
-        5. Ao testar interseção, testar o raio contra todos os triângulos
-           e retornar o menor t positivo (o triângulo mais próximo)
-
-    IMPORTANTE: para malhas, o material vem do arquivo .mtl, não do JSON da cena.
-    O parâmetro 'material' do construtor é usado apenas como fallback para
-    triângulos cujo .obj não declarou material via 'usemtl'.
-    """
-
     def __init__(self, path: str, material, transforms: list):
-        """Carrega a malha do arquivo 'path' e aplica as transformações.
+        """Carrega a malha do arquivo 'path' e aplica as transformações."""
+        reader   = ObjReader(path)
+        vertices = reader.get_vertices()
+        faces    = reader.get_faces()
+        self._construir(vertices, faces, material, transforms)
 
-        As transformações em 'transforms' são aplicadas na ordem da lista:
-        a primeira transforma os vértices primeiro (TRS → escala, depois rotação,
-        depois translação). A composição é M = T * R * S, aplicada como M * vértice."""
+    @classmethod
+    def from_dados(cls, vertices: list, faces: list, material, transforms: list) -> "Malha":
+        """Constrói a Malha a partir de vértices/faces já em memória (sem .obj em disco).
+
+        vertices: lista de Ponto, no espaço do objeto (local).
+        faces: lista de objetos com .vertice_indice (tupla de 3 índices, 0-based)
+               e .material (MaterialProperties, ou None para usar o fallback).
+        Usado por geradores procedurais como Torus, que não precisam de um
+        arquivo .obj de verdade.
+        """
+        instancia = cls.__new__(cls)  # pula o __init__ original, que exige um path
+        instancia._construir(vertices, faces, material, transforms)
+        return instancia
+
+    def _construir(self, vertices: list, faces: list, material, transforms: list):
+        """Lógica compartilhada entre __init__ (a partir de arquivo) e from_dados
+        (a partir de dados em memória): aplica transform, resolve materiais por
+        face, monta os triângulos e calcula a AABB."""
         M = self._construir_matriz(transforms)
 
-        reader     = ObjReader(path)
-        vertices   = reader.get_vertices()
-        faces      = reader.get_faces()
-
-        # Aplica a transformação a todos os vértices de uma vez
         vertices_mundo = [M.aplicar_ponto(v) for v in vertices]
 
-        # Cache de conversões MaterialProperties → MaterialData para evitar trabalho
-        # redundante quando várias faces compartilham o mesmo material
         material_cache: dict[int, MaterialData] = {}
-        fallback_material = material  # usado se a face não tem material no .mtl
+        fallback_material = material
 
         self.triangulos = []
         first_material = None
@@ -58,14 +54,8 @@ class Malha:
                 tri_material,
             ))
 
-        # self.material guarda o material "principal" da malha (primeira face).
-        # Não é mais usado diretamente na renderização — o material vem do
-        # HitInfo de cada triângulo. Mantemos por compatibilidade.
         self.material = first_material if first_material is not None else fallback_material
 
-        # AABB (axis-aligned bounding box) da malha no espaço do mundo.
-        # Usada como teste rápido em intersectar(): se o raio não atravessa a caixa,
-        # pula os N testes triângulo-a-triângulo.
         if vertices_mundo:
             xs = [p.x for p in vertices_mundo]
             ys = [p.y for p in vertices_mundo]
@@ -74,7 +64,6 @@ class Malha:
             self.bbox_max = (max(xs), max(ys), max(zs))
         else:
             self.bbox_min = self.bbox_max = (0.0, 0.0, 0.0)
-
     @staticmethod
     def _material_da_face(props: MaterialProperties,
                           cache: dict,

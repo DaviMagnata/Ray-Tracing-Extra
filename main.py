@@ -1,6 +1,6 @@
 import math
 import sys
-
+from src.Torus import Torus
 from src.Ponto import Ponto
 from src.Vetor import Vetor
 from src.Raio import Raio
@@ -8,7 +8,7 @@ from src.Esfera import Esfera
 from src.Plano import Plano
 from src.Malha import Malha
 from utils.Scene.sceneParser import SceneJsonLoader
-
+from utils.Scene.sceneSchema import TransformData
 
 # Pequeno deslocamento usado para afastar raios secundários da superfície de origem
 # e evitar auto-interseção causada por imprecisão de ponto flutuante.
@@ -312,6 +312,11 @@ def renderizar(scene_path="utils/input/sampleScene.json"):
 
     C, u, v, w = base_camera(scene)
     objetos     = criar_objetos(scene)
+
+    toro = Torus(R=2.0, r=0.5, transforms=[
+    TransformData(t_type="translation", data=Vetor(0.0, 0.0, 0.0))
+    ])
+    objetos.append(toro)
 
     # Cabeçalho PPM: tipo P3 (texto RGB), dimensões e valor máximo por canal
     linhas = [f"P3\n{largura} {altura}\n255"]
