@@ -1,0 +1,166 @@
+{
+  "globalLight": [0.1, 0.1, 0.1],
+
+  "materials": {
+    "parede_branca": {
+      "color": [0.73, 0.73, 0.73],
+      "ka": [0.73, 0.73, 0.73],
+      "ks": [0.0, 0.0, 0.0],
+      "ns": 10
+    },
+    "parede_vermelha": {
+      "color": [0.65, 0.05, 0.05],
+      "ka": [0.65, 0.05, 0.05],
+      "ks": [0.0, 0.0, 0.0],
+      "ns": 10
+    },
+    "parede_verde": {
+      "color": [0.12, 0.45, 0.15],
+      "ka": [0.12, 0.45, 0.15],
+      "ks": [0.0, 0.0, 0.0],
+      "ns": 10
+    },
+    "bloco_azul": {
+      "color": [0.1, 0.2, 0.8],
+      "ka": [0.1, 0.2, 0.8],
+      "ks": [0.3, 0.3, 0.3],
+      "ns": 64
+    },
+    "bloco_laranja": {
+      "color": [0.9, 0.5, 0.1],
+      "ka": [0.9, 0.5, 0.1],
+      "ks": [0.2, 0.2, 0.2],
+      "ns": 32
+    },
+    "esfera_espelho": {
+      "color": [1.0, 1.0, 1.0],
+      "ka": [1.0, 1.0, 1.0],
+      "ks": [0.01, 0.01, 0.01],
+      "ns": 256
+    },
+    "esfera_vidro": {
+      "color": [1.0, 1.0, 1.0],
+      "ka": [1.0, 1.0, 1.0],
+      "ks": [0.01, 0.01, 0.01],
+      "ns": 256
+    },
+    "toro_ouro": {
+      "color": [0.83, 0.68, 0.21],
+      "ka": [0.3, 0.25, 0.08],
+      "ks": [0.6, 0.6, 0.4],
+      "ns": 40
+    },
+    "toro_prata": {
+      "color": [0.75, 0.75, 0.78],
+      "ka": [0.3, 0.3, 0.3],
+      "ks": [0.5, 0.5, 0.5],
+      "kr": [0.9,0.9,0.9],
+      "ns": 50
+    },
+    "toro_quase_esfera": {
+      "color": [0.8, 0.15, 0.4],
+      "ka": [0.3, 0.05, 0.15],
+      "ks": [0.3, 0.3, 0.3],
+      "ns": 30
+    }
+  },
+
+  "camera": {
+    "lookfrom": [278, 278, -1600],
+    "lookat": [278, 278, 0],
+    "upVector": [0, 1, 0],
+    "image_width": 900,
+    "image_height": 900,
+    "screen_distance": 2.0,
+    "viewport_width": 1.0,
+    "viewport_height": 1.0
+  },
+
+  "lights": [
+    {
+      "name": "Luz do Teto",
+      "position": [300, 278, -700],
+      "color": [0.0, 0.1, 0.75]
+    },
+    {
+      "name": "Luz do Meio da Caixa",
+      "position": [50, 278, -300],
+      "color": [0.75, 0.1, 0.0]
+    }
+  ],
+
+  "objects": [
+    {
+      "name": "Chão",
+      "type": "plane",
+      "point_on_plane": [0, 0, 0],
+      "normal": [0, 1, 0],
+      "material": "parede_branca"
+    },
+    {
+      "name": "Teto",
+      "type": "plane",
+      "point_on_plane": [0, 555, 0],
+      "normal": [0, -1, 0],
+      "material": "parede_branca"
+    },
+    {
+      "name": "Parede do Fundo",
+      "type": "plane",
+      "point_on_plane": [0, 0, 555],
+      "normal": [0, 0, -1],
+      "material": "parede_branca"
+    },
+    {
+      "name": "Parede Direita (Verde)",
+      "type": "plane",
+      "point_on_plane": [555, 0, 0],
+      "normal": [-1, 0, 0],
+      "material": "parede_verde"
+    },
+    {
+      "name": "Parede Esquerda (Vermelha)",
+      "type": "plane",
+      "point_on_plane": [0, 0, 0],
+      "normal": [1, 0, 0],
+      "material": "parede_vermelha"
+    },
+    {
+      "name": "Toro Normal",
+      "type": "torus",
+      "R": 80.0,
+      "r": 30.0,
+      "n_u": 30,
+      "n_v": 20,
+      "material": "toro_ouro",
+      "transform": [
+        { "type": "translation", "vector": [160.0, 40.0, 250.0] }
+      ]
+    },
+    {
+      "name": "Toro Escalado",
+      "type": "torus",
+      "R": 80.0,
+      "r": 30.0,
+      "n_u": 30,
+      "n_v": 20,
+      "material": "toro_prata",
+      "transform": [
+        { "type": "scaling", "vector": [0.5, 0.5, 0.5] },
+        { "type": "translation", "vector": [278.0, 25.0, 100.0] }
+      ]
+    },
+    {
+      "name": "Toro Quase Esfera",
+      "type": "torus",
+      "R": 2.0,
+      "r": 60.0,
+      "n_u": 30,
+      "n_v": 20,
+      "material": "toro_quase_esfera",
+      "transform": [
+        { "type": "translation", "vector": [400.0, 70.0, 250.0] }
+      ]
+    }
+  ]
+}

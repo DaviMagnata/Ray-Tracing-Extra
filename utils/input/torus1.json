@@ -1,0 +1,136 @@
+{
+  "globalLight": [0.01, 0.01, 0.01],
+
+  "camera": {
+    "lookfrom": [10.0, 5.0, 15.0],
+    "lookat": [0.0, 0.0, 0.0],
+    "upVector": [0.0, 1.0, 0.0],
+    "image_width": 500,
+    "image_height": 500,
+    "screen_distance": 1.5
+  },
+
+  "lights": [
+    {
+      "name": "Luz Vermelha",
+      "position": [20.0, 3.0, 20.0],
+      "color": [0.7, 0.0, 0.0]
+    },
+    {
+      "name": "Luz Verde",
+      "position": [20.0, 3.0, -20.0],
+      "color": [0.0, 0.7, 0.0]
+    },
+    {
+      "name": "Luz Azul",
+      "position": [-20.0, 3.0, 20.0],
+      "color": [0.0, 0.0, 0.7]
+    },
+    {
+      "name": "Luz Pos (Atenuada)",
+      "position": [5.0, 10.0, 13.0],
+      "color": [0.075, 0.075, 0.075]
+    }
+  ],
+
+  "materials": {
+    "mat_plano_chao": {
+      "color": [0.3, 0.8, 0.4],
+      "ka": [0.3, 0.8, 0.4],
+      "ks": [0.0, 0.0, 0.0],
+      "ns": 10
+    },
+    "mat_cubo_padrao": {
+      "color": [0.7, 0.7, 0.7],
+      "ka": [0.7, 0.7, 0.7],
+      "ks": [0.0, 0.0, 0.0],
+      "ns": 10
+    },
+    "mat_esfera_azul": {
+      "color": [0.1, 0.2, 0.9],
+      "ka": [0.1, 0.2, 0.9],
+      "ks": [0.0, 0.0, 0.0],
+      "ns": 10
+    },
+    "mat_esfera_verde_agua": {
+      "color": [0.4, 0.8, 0.6],
+      "ka": [0.4, 0.8, 0.6],
+      "ks": [0.0, 0.0, 0.0],
+      "ns": 10
+    },
+    "mat_macaco_sensivel": {
+      "color": [1.0, 1.0, 1.0],
+      "ka": [0.5, 0.5, 0.5],
+      "ks": [1.0, 1.0, 1.0],
+      "ns": 8
+    },
+    "mat_toro_1": {
+      "color": [0.9, 0.9, 0.9],
+      "kd": [0.85, 0.65, 0.13],
+      "ka": [0.4, 0.3, 0.05],
+      "ks": [0.6, 0.6, 0.4],
+      "kr": [0.9, 0.9, 0.9],
+      "ns": 40
+    },
+    "mat_toro_2": {
+      "color": [0.6, 0.5, 0.6],
+      "kd": [0.6, 0.1, 0.6],
+      "ka": [0.25, 0.05, 0.25],
+      "ks": [0.2, 0.2, 0.2],
+      "ns": 15
+    },
+    "mat_toro_3": {
+      "color": [0.1, 0.1, 0.1],
+      "kd": [0.1, 0.6, 0.7],
+      "ka": [0.05, 0.25, 0.3],
+      "ks": [0.9, 0.9, 0.9],
+      "ns": 60
+    }
+  },
+
+  "objects": [
+    {
+      "name": "Plano Chão",
+      "type": "plane",
+      "point_on_plane": [0.0, -7.0, 0.0],
+      "normal": [0.0, 1.0, 0.0],
+      "material": "mat_plano_chao"
+    },
+    {
+      "name": "Toro 1",
+      "type": "torus",
+      "R": 2.0,
+      "r": 0.5,
+      "n_u": 16,
+      "n_v": 12,
+      "material": "mat_toro_1",
+      "transform": [
+        { "type": "rotation", "vector": [1.5707963, 0.0, 0.0] },
+        { "type": "translation", "vector": [5.0, 0.0, 0.0] }
+      ]
+    },
+    {
+      "name": "Toro 2",
+      "type": "torus",
+      "R": 2.0,
+      "r": 0.5,
+      "n_u": 20,
+      "n_v": 20,
+      "material": "mat_toro_2",
+      "transform": [
+        { "type": "rotation", "vector": [0.75, 0.0, 0.0] },
+        { "type": "translation", "vector": [-5.0, 0.0, 0.0] }
+      ]
+    },
+    {
+      "name": "Toro 3",
+      "type": "torus",
+      "R": 2.0,
+      "r": 0.5,
+      "n_u": 8,
+      "n_v": 6,
+      "material": "mat_toro_3",
+      "transform": []
+    }
+  ]
+}

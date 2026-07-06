@@ -19,16 +19,17 @@ class Torus:
         d=1.0,
     )
 
-    def __init__(self, R, r, transforms: list, n_u=30, n_v=20):
+    def __init__(self, R, r, transforms: list,material: MaterialData = None, n_u=16, n_v=12):
         self.R = R
         self.r = r
         self.n_u = n_u
         self.n_v = n_v
+        self.material = material 
 
         vertices = self._gerar_vertices()
         faces = self._gerar_faces()
 
-        self.malha = Malha.from_dados(vertices, faces, self._MATERIAL_PADRAO, transforms)
+        self.malha = Malha.from_dados(vertices, faces, self.material, transforms)
 
     def _gerar_vertices(self):
         vertices = []

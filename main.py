@@ -99,7 +99,7 @@ def criar_objetos(scene):
             n_u = int(obj.numeric_data.get("n_u", 30))
             n_v = int(obj.numeric_data.get("n_v", 20))
             
-            objetos.append(Torus(R=R, r=r, n_u=n_u, n_v=n_v, transforms=obj.transforms))
+            objetos.append(Torus(R=R, r=r, n_u=n_u, n_v=n_v,material=obj.material, transforms=obj.transforms))
 
     return objetos
 
